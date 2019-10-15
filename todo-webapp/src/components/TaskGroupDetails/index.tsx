@@ -49,6 +49,11 @@ const TaskGroupDetails: React.FC<Props> = ({ classes }: Props) => {
     setSelectedTask(result.id);
   }, [groupId])
 
+  const deleteTask = useCallback(async (id: number) => {
+    const apiClient = new ApiClient();
+    await apiClient.DeleteUserTask(id);
+  }, [])
+
   return (
   <Grid container>
     <Grid item sm={6}>
@@ -61,7 +66,7 @@ const TaskGroupDetails: React.FC<Props> = ({ classes }: Props) => {
       userTasks.map(ut => 
         <div key={ut.id} onClick={() => setSelectedTask(ut.id)}>
           {ut.name}
-          <Button>Remove</Button>
+          <Button onClick={() => deleteTask(ut.id)}>Remove</Button>
         </div>
       ) :
       <div>No tasks in this group</div>

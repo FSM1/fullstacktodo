@@ -26,21 +26,24 @@ const TaskGroupList: React.FC<Props> = ({ classes }: Props) => {
 
   const addGroup = useCallback(async () => {
     const apiClient = new ApiClient();
-    const result = await apiClient.PostTaskGroup({name: "New Group"});
+    const result = await apiClient.PostTaskGroup({ name: "New Group" });
     setTaskGroups(oldarr => [...oldarr, result]);
     history.push(`/taskgroup/${result.id}`)
   }, [history])
 
+  const deleteGroup = useCallback(async (id: number) => {
+    const apiClient = new ApiClient();
+    await apiClient.DeleteTaskGroup(id);
+  }, [])
   return (
     <>
       <Typography>Task Groups</Typography>
       <Button onClick={addGroup}>Add</Button>
       {taskGroups && taskGroups.map(tg =>
-        <a key={tg.id} href={`taskgroup/${tg.id}`}>
-          <div >
-            {tg.name} ({tg.taskCount})
+        <div >
+          <a key={tg.id} href={`taskgroup/${tg.id}`}>{tg.name} ({tg.taskCount})</a> 
+          <Button onClick={() => deleteGroup(tg.id)}>Delete</Button>
         </div>
-        </a>
       )}
     </>
   )
