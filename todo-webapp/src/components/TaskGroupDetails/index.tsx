@@ -52,6 +52,8 @@ const TaskGroupDetails: React.FC<Props> = ({ classes }: Props) => {
   const deleteTask = useCallback(async (id: number) => {
     const apiClient = new ApiClient();
     await apiClient.DeleteUserTask(id);
+    setUserTasks(previous => previous.filter(ut => ut.id !== id));
+    setSelectedTask(undefined);
   }, [])
 
   return (

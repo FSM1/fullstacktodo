@@ -34,14 +34,16 @@ const TaskGroupList: React.FC<Props> = ({ classes }: Props) => {
   const deleteGroup = useCallback(async (id: number) => {
     const apiClient = new ApiClient();
     await apiClient.DeleteTaskGroup(id);
+    setTaskGroups(previous => previous.filter(tg => tg.id !== id));
   }, [])
+
   return (
     <>
       <Typography>Task Groups</Typography>
       <Button onClick={addGroup}>Add</Button>
       {taskGroups && taskGroups.map(tg =>
-        <div >
-          <a key={tg.id} href={`taskgroup/${tg.id}`}>{tg.name} ({tg.taskCount})</a> 
+        <div key={tg.id}>
+          <a href={`taskgroup/${tg.id}`}>{tg.name} ({tg.taskCount})</a> 
           <Button onClick={() => deleteGroup(tg.id)}>Delete</Button>
         </div>
       )}

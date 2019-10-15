@@ -107,7 +107,7 @@ namespace todo_api.Controllers
                 Deadline = userTask.Deadline ?? DateTime.Now,
                 UserId = userTask?.User.Id,
                 Status = userTask?.Status.ToString() ?? Models.TaskStatus.New.ToString(),
-                GroupId = userTask?.TaskGroup.Id
+                GroupId = userTask?.TaskGroup?.Id
             };
         }
 

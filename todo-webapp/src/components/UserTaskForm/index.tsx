@@ -37,11 +37,11 @@ const UserTaskForm: React.FC<Props> = ({ classes, task }: Props) => {
   return (
     <Formik
       initialValues={{
-        name: task.name,
-        deadline: dayjs(task.deadline).format('YYYY-MM-DD'),
-        userId: task.userId || 0,
+        name: task && task.name || '',
+        deadline: dayjs(task && task.deadline || new Date()).format('YYYY-MM-DD'),
+        userId: task && task.userId || 0,
         //@ts-ignore
-        status: TaskStatus[task.status] || 0,
+        status: task && TaskStatus[task.status] || 0,
       }}
       onSubmit={async (values) => {
         const apiClient = new ApiClient();
