@@ -8,7 +8,10 @@ import { Button, MenuItem } from '@material-ui/core';
 import { TextField, Select } from 'formik-material-ui';
 
 const styles = (theme: Theme) => createStyles({
-
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  }
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -43,6 +46,7 @@ const UserTaskForm: React.FC<Props> = ({ classes, task }: Props) => {
         //@ts-ignore
         status: task && TaskStatus[task.status] || 0,
       }}
+      enableReinitialize
       onSubmit={async (values) => {
         const apiClient = new ApiClient();
         try {
@@ -53,23 +57,33 @@ const UserTaskForm: React.FC<Props> = ({ classes, task }: Props) => {
       }}
       validationSchema={taskFormSchema}
       render={() =>
-        <Form>
+        <Form className={classes.form}>
           <Field
             name='name'
+            label='Name'
             component={TextField} />
           <Field
             name='deadline'
+            label='Deadline'
             type='date'
             component={TextField} />
           <Field
             name='userId'
+            label='User'
             component={Select}>
+            <MenuItem value="" disabled>
+              <em>Select User</em>
+            </MenuItem>
             {users.map((u, i) =>
               <MenuItem key={i} value={u.id}>{u.fullName}</MenuItem>)}
           </Field>
           <Field
             name='status'
+            label='Status'
             component={Select}>
+            <MenuItem value="" disabled>
+              <em>Select Status</em>
+            </MenuItem>
             {Object.keys(TaskStatus).filter(k => !isNaN(Number.parseInt(k))).map((ts, i) =>
               <MenuItem key={i} value={Number.parseInt(ts)}>{TaskStatus[Number.parseInt(ts)]}</MenuItem>
             )}

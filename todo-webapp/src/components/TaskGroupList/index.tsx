@@ -12,6 +12,7 @@ const TaskGroupList: React.FC<Props> = ({ classes }: Props) => {
   // TODO Get all Task Groups here and list by Id
 
   const [taskGroups, setTaskGroups] = useState<Array<TaskGroupViewModel>>([]);
+  const [sortField, setSortField] = useState<'name' | 'taskCount'>('name')
 
   useEffect(() => {
     const fetchTaskGroups = async () => {
@@ -41,7 +42,9 @@ const TaskGroupList: React.FC<Props> = ({ classes }: Props) => {
     <>
       <Typography>Task Groups</Typography>
       <Button onClick={addGroup}>Add</Button>
-      {taskGroups && taskGroups.map(tg =>
+      <Button onClick={() => setSortField('name')}>Sort: Name</Button>
+      <Button onClick={() => setSortField('taskCount')}>Sort: Tasks</Button>
+      {taskGroups && taskGroups.sort((a, b) => (a[sortField] > b[sortField]) ? 1 : -1).map(tg =>
         <div key={tg.id}>
           <a href={`taskgroup/${tg.id}`}>{tg.name} ({tg.taskCount})</a> 
           <Button onClick={() => deleteGroup(tg.id)}>Delete</Button>
